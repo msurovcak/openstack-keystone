@@ -15,7 +15,6 @@
 # under the License.
 
 """Main entry point into the Token service."""
-
 import datetime
 
 from keystone.common import manager
@@ -131,3 +130,8 @@ class Driver(object):
         """
         expire_delta = datetime.timedelta(seconds=CONF.token.expiration)
         return timeutils.utcnow() + expire_delta
+
+    def flush_expired_tokens(self):
+        """Archive or delete tokens that have expired.
+        """
+        raise exception.NotImplemented()

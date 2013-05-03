@@ -23,6 +23,7 @@ from keystone import config
 from keystone.common import openssl
 from keystone.openstack.common import importutils
 from keystone.openstack.common import jsonutils
+from keystone import token
 
 CONF = config.CONF
 
@@ -67,6 +68,17 @@ class PKISetup(BaseApp):
     def main(self):
         conf_ssl = openssl.ConfigurePKI()
         conf_ssl.run()
+
+
+class TokenFlush(BaseApp):
+    """Flush expired tokens from the backend."""
+
+    name = 'token_flush'
+
+    @classmethod
+    def main(cls):
+        token_manager = token.Manager()
+        token_manager.driver.flush_expired_tokens()
 
 
 class ImportLegacy(BaseApp):
@@ -125,6 +137,7 @@ CMDS = {'db_sync': DbSync,
         'export_legacy_catalog': ExportLegacyCatalog,
         'import_nova_auth': ImportNovaAuth,
         'pki_setup': PKISetup,
+        'token_flush': TokenFlush,
         }
 
 
